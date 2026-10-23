@@ -2,16 +2,17 @@
 layout: layouts/base.njk
 bodyClass: page-post
 ---
-{%- set prevPost = collections.posts | getPreviousCollectionItem(page) -%}
-{%- set nextPost = collections.posts | getNextCollectionItem(page) -%}
+{%- set posts = collections["posts_" + lang] -%}
+{%- set prevPost = posts | getPreviousCollectionItem(page) -%}
+{%- set nextPost = posts | getNextCollectionItem(page) -%}
 <main class="post-main">
 <article class="post">
-<a class="back-link" href="/writing/">← writing</a>
+<a class="back-link" href="{{ t.routes.writing }}">{{ t.writing.back }}</a>
 
 <header class="post-header">
 <p class="post-meta">
-<span>{% if draft %}draft{% else %}<time datetime="{{ page.date | isoDate }}">{{ page.date | isoDate }}</time>{% endif %}</span>
-<span>{{ content | readingTime }} min read</span>
+<span>{% if draft %}{{ t.writing.draft }}{% else %}<time datetime="{{ page.date | isoDate }}">{{ page.date | isoDate }}</time>{% endif %}</span>
+<span>{{ content | readingTime }} {{ t.writing.minutesRead }}</span>
 {%- for tag in tags %}<span>#{{ tag }}</span>{% endfor %}
 </p>
 <h1>{{ title }}</h1>
@@ -23,9 +24,9 @@ bodyClass: page-post
 </div>
 
 {% if prevPost or nextPost %}
-<nav class="post-nav" aria-label="More posts">
-{% if prevPost %}<a href="{{ prevPost.url }}" rel="prev"><span class="post-nav__dir">← previous</span><span class="post-nav__title">{{ prevPost.data.title }}</span></a>{% endif %}
-{% if nextPost %}<a class="post-nav__next" href="{{ nextPost.url }}" rel="next"><span class="post-nav__dir">next →</span><span class="post-nav__title">{{ nextPost.data.title }}</span></a>{% endif %}
+<nav class="post-nav" aria-label="{{ t.writing.moreNav }}">
+{% if prevPost %}<a href="{{ prevPost.url }}" rel="prev"><span class="post-nav__dir">{{ t.writing.previous }}</span><span class="post-nav__title">{{ prevPost.data.title }}</span></a>{% endif %}
+{% if nextPost %}<a class="post-nav__next" href="{{ nextPost.url }}" rel="next"><span class="post-nav__dir">{{ t.writing.next }}</span><span class="post-nav__title">{{ nextPost.data.title }}</span></a>{% endif %}
 </nav>
 {% endif %}
 </article>

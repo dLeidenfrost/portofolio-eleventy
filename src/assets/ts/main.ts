@@ -3,9 +3,13 @@ import { applyTheme, getStoredTheme, getTheme, onSystemThemeChange, saveTheme, t
 function initThemeToggle(): void {
   const buttons = document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]");
 
+  // Labels come from data attributes so they follow the page language.
   const syncLabels = (): void => {
-    const label = getTheme() === "dark" ? "Switch to light mode" : "Switch to dark mode";
-    buttons.forEach((button) => button.setAttribute("aria-label", label));
+    const isDark = getTheme() === "dark";
+    buttons.forEach((button) => {
+      const label = isDark ? button.dataset.labelToLight : button.dataset.labelToDark;
+      if (label) button.setAttribute("aria-label", label);
+    });
   };
 
   buttons.forEach((button) =>
@@ -36,9 +40,9 @@ function initCopyButtons(): void {
     button.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(button.dataset.copy ?? "");
-        label.textContent = "Copied";
+        label.textContent = button.dataset.copiedText ?? "Copied";
       } catch {
-        label.textContent = "Copy failed";
+        label.textContent = button.dataset.failedText ?? "Copy failed";
       }
       window.clearTimeout(resetTimer);
       resetTimer = window.setTimeout(() => {

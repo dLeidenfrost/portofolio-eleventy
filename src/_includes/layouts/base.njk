@@ -1,17 +1,24 @@
+{%- set translations = collections | translations({ routeKey: routeKey, post: { page: page, data: { translationKey: translationKey } } }) -%}
 <!doctype html>
-<html lang="en">
+<html lang="{{ t.htmlLang }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>{% if title %}{{ title }} · {{ site.name }}{% else %}{{ site.name }}{% endif %}</title>
-<meta name="description" content="{{ description or site.description }}">
+<meta name="description" content="{{ description or t.meta.description }}">
 <script>{% themeInitScript %}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="/assets/css/main.css">
-<link rel="alternate" type="application/rss+xml" title="Writing · {{ site.name }}" href="/rss.xml">
+<link rel="alternate" type="application/rss+xml" title="{{ t.writing.title }} · {{ site.name }}" href="{{ t.routes.feed }}">
+{%- if translations.length > 1 %}
+{%- for version in translations %}
+<link rel="alternate" hreflang="{{ version.hreflang }}" href="{{ version.url }}">
+{%- endfor %}
+<link rel="alternate" hreflang="x-default" href="{{ translations[0].url }}">
+{%- endif %}
 <script src="/assets/main.js" defer></script>
 </head>
 <body id="top"{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>

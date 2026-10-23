@@ -5,6 +5,7 @@ import loadLanguages from "prismjs/components/index.js";
 import { feedPlugin } from "@11ty/eleventy-plugin-rss";
 
 import site from "./src/_data/site.js";
+import i18n from "./src/_data/i18n.js";
 
 loadLanguages(["typescript", "bash", "json", "toml", "yaml", "markdown"]);
 
@@ -65,13 +66,12 @@ export default function (eleventyConfig) {
   };
   eleventyConfig.setLibrary("md", md);
 
-  // Collections
-  eleventyConfig.addCollection("posts", (api) =>
-    api.getFilteredByGlob("src/posts/*.md").sort((a, b) => a.date - b.date),
-  );
-  eleventyConfig.addCollection("publishedPosts", (api) =>
-    api.getFilteredByGlob("src/posts/*.md").filter((post) => !post.data.draft),
-  );
+  // Collections: posts_<lang> (all, oldest first) and feed_<lang> (published only)
+  for (const lang of site.languages) {
+    const postsIn = (api) => api.getFilteredByGlob(`src/posts/${lang}/*.md`).sort((a, b) => a.date - b.date);
+    eleventyConfig.addCollection(`posts_${lang}`, postsIn);
+    eleventyConfig.addCollection(`feed_${lang}`, (api) => postsIn(api).filter((post) => !post.data.draft));
+  }
 
   // Filters
   const pad = (n) => String(n).padStart(2, "0");
@@ -94,18 +94,35 @@ export default function (eleventyConfig) {
     return [...groups].map(([year, items]) => ({ year, posts: items }));
   });
 
-  eleventyConfig.addPlugin(feedPlugin, {
-    type: "rss",
-    outputPath: "/rss.xml",
-    collection: { name: "publishedPosts", limit: 20 },
-    metadata: {
-      language: "en",
-      title: `Writing · ${site.name}`,
-      subtitle: site.writingIntro,
-      base: site.url,
-      author: { name: site.name, email: site.email },
-    },
-  });
+  // Versions of the current page in every language. Pages match by `routeKey`; posts by
+  // `translationKey` (defaults to the file name). Languages without a translation are left out.
+  const translationKeyOf = (post) => post.data.translationKey ?? post.page.fileSlug;
+  eleventyConfig.addFilter("translations", (collections, { routeKey, post }) =>
+    site.languages
+      .map((lang) => {
+        const url = routeKey
+          ? i18n[lang].routes[routeKey]
+          : collections[`posts_${lang}`]?.find((other) => translationKeyOf(other) === translationKeyOf(post))?.url;
+        return url && { lang, url, hreflang: i18n[lang].htmlLang, switchTo: i18n[lang].switchTo };
+      })
+      .filter(Boolean),
+  );
+
+  for (const lang of site.languages) {
+    const t = i18n[lang];
+    eleventyConfig.addPlugin(feedPlugin, {
+      type: "rss",
+      outputPath: t.routes.feed,
+      collection: { name: `feed_${lang}`, limit: 20 },
+      metadata: {
+        language: t.htmlLang,
+        title: `${t.writing.title} · ${site.name}`,
+        subtitle: t.writing.intro,
+        base: new URL(t.routes.home, site.url).href,
+        author: { name: site.name, email: site.email },
+      },
+    });
+  }
 }
 
 export const config = {

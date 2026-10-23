@@ -1,18 +1,21 @@
-{%- set onHome = page.url == "/" -%}
-{%- set home = "" if onHome else "/" -%}
-{%- set inWriting = page.url.startsWith("/writing/") -%}
+{%- set onHome = page.url == t.routes.home -%}
+{%- set home = "" if onHome else t.routes.home -%}
+{%- set inWriting = page.url.startsWith(t.routes.writing) -%}
 <header class="site-header">
 <div class="container">
-<a class="logo" href="{{ '#top' if onHome else '/' }}">{{ site.shortName }}<span class="muted">_</span></a>
-<nav class="site-nav" aria-label="Main">
-<a href="{{ home }}#work">work</a>
-<a href="/writing/"{% if inWriting %} aria-current="{{ 'page' if page.url == '/writing/' else 'true' }}"{% endif %}>writing</a>
-<a href="{{ home }}#about">about</a>
-<a href="{{ home }}#contact">contact</a>
-<button type="button" class="pill-btn js-only" data-theme-toggle aria-label="Toggle color theme">
+<a class="logo" href="{{ '#top' if onHome else t.routes.home }}">{{ site.shortName }}<span class="muted">_</span></a>
+<nav class="site-nav" aria-label="{{ t.nav.label }}">
+<a href="{{ home }}#work">{{ t.nav.work }}</a>
+<a href="{{ t.routes.writing }}"{% if inWriting %} aria-current="{{ 'page' if page.url == t.routes.writing else 'true' }}"{% endif %}>{{ t.nav.writing }}</a>
+<a href="{{ home }}#about">{{ t.nav.about }}</a>
+<a href="{{ home }}#contact">{{ t.nav.contact }}</a>
+{%- for version in translations %}{% if version.lang != lang %}
+<a href="{{ version.url }}" hreflang="{{ version.hreflang }}" lang="{{ version.hreflang }}" aria-label="{{ version.switchTo }}">{{ version.lang }}</a>
+{%- endif %}{% endfor %}
+<button type="button" class="pill-btn js-only" data-theme-toggle aria-label="{{ t.theme.toggle }}" data-label-to-light="{{ t.theme.toLight }}" data-label-to-dark="{{ t.theme.toDark }}">
 <svg class="when-dark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
 <svg class="when-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
-<span class="when-dark">dark</span><span class="when-light">light</span>
+<span class="when-dark">{{ t.theme.dark }}</span><span class="when-light">{{ t.theme.light }}</span>
 </button>
 </nav>
 </div>

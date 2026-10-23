@@ -1,17 +1,23 @@
 ---
 layout: layouts/base.njk
-title: Writing
-permalink: /writing/
+routeKey: writing
+pagination:
+  data: site.languages
+  size: 1
+  alias: lang
+permalink: "{{ i18n[lang].routes.writing }}"
+eleventyComputed:
+  title: "{{ i18n[lang].writing.title }}"
 ---
 <main>
 <div class="container page-intro">
-<p class="prompt">~/writing % ls -t</p>
-<h1>Writing</h1>
-<p class="page-intro__lede">{{ site.writingIntro }}</p>
+<p class="prompt">{{ t.writing.prompt }}</p>
+<h1>{{ t.writing.title }}</h1>
+<p class="page-intro__lede">{{ t.writing.intro }}</p>
 </div>
 
 <div class="container archive">
-{% for group in collections.posts | groupByYear %}
+{% for group in collections["posts_" + lang] | groupByYear %}
 <section class="year" aria-labelledby="y{{ group.year }}">
 <h2 id="y{{ group.year }}" class="section-label year__label">{{ group.year }}</h2>
 <div class="year__posts">
@@ -19,7 +25,7 @@ permalink: /writing/
 <a class="post-card" href="{{ post.url }}">
 <span class="post-card__head">
 <span class="post-card__title">{{ post.data.title }}</span>
-<span class="post-card__meta">{% if post.data.draft %}draft{% else %}{{ post.date | monthDay }}{% endif %} · {{ post.content | readingTime }} min</span>
+<span class="post-card__meta">{% if post.data.draft %}{{ t.writing.draft }}{% else %}{{ post.date | monthDay }}{% endif %} · {{ post.content | readingTime }} {{ t.writing.minutes }}</span>
 </span>
 {% if post.data.description %}<span class="post-card__summary">{{ post.data.description }}</span>{% endif %}
 {% if post.data.tags %}
@@ -32,9 +38,9 @@ permalink: /writing/
 </div>
 </section>
 {% else %}
-<p class="muted">Nothing published yet.</p>
+<p class="muted">{{ t.writing.empty }}</p>
 {% endfor %}
 
-<p class="feed-link"><a href="/rss.xml">rss.xml</a></p>
+<p class="feed-link"><a href="{{ t.routes.feed }}">rss.xml</a></p>
 </div>
 </main>

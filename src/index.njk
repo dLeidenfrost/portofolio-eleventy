@@ -1,19 +1,25 @@
 ---
 layout: layouts/base.njk
+routeKey: home
+pagination:
+  data: site.languages
+  size: 1
+  alias: lang
+permalink: "{{ i18n[lang].routes.home }}"
 ---
 <main>
 <section aria-labelledby="hero-title">
 <div class="container hero">
-<p class="prompt">daniel@home ~ % whoami</p>
+<p class="prompt">daniel@cuernavaca ~ % whoami</p>
 <h1 id="hero-title">{{ site.name }}</h1>
-<p class="lede">Frontend developer with 11+ years building secure, scalable web and mobile apps for the financial sector. React, Next.js and TypeScript by trade, Node.js on the backend.</p>
+<p class="lede">{{ t.hero.lede }}</p>
 <p class="meta-row">
-<span class="status">Open to full-stack roles</span>
-<span>Cuernavaca, MX · UTC−6</span>
-<span>ES / EN</span>
+<span class="status">{{ t.hero.status }}</span>
+<span>{{ t.hero.location }}</span>
+<span>{{ t.hero.languages }}</span>
 </p>
 <div class="actions">
-<a class="btn btn--primary" target="_blank" rel="noopener noreferrer" href="{{ site.cvUrl }}">Download CV</a>
+<a class="btn btn--primary" href="{{ site.cvUrl }}">{{ t.hero.cv }}</a>
 <a class="btn" href="{{ site.github }}">GitHub ↗</a>
 <a class="btn" href="{{ site.linkedin }}">LinkedIn ↗</a>
 </div>
@@ -22,9 +28,9 @@ layout: layouts/base.njk
 
 <section id="work" class="section" aria-labelledby="work-title">
 <div class="container section__inner">
-<h2 id="work-title" class="section-label">/work</h2>
+<h2 id="work-title" class="section-label">{{ t.work.label }}</h2>
 <div class="section-body work">
-{% for job in work %}
+{% for job in t.work.jobs %}
 <div class="row-between">
 <div class="company">
 <h3>{{ job.company }}</h3>
@@ -58,16 +64,16 @@ layout: layouts/base.njk
 
 <section id="stack" class="section" aria-labelledby="stack-title">
 <div class="container section__inner">
-<h2 id="stack-title" class="section-label">/stack</h2>
+<h2 id="stack-title" class="section-label">{{ t.stack.label }}</h2>
 <div class="section-body code-window code-window--stack">
 <div class="code-window__bar">
 <span>{{ stack.filename }}</span>
-<span>{{ stack.rows | length }} keys</span>
+<span>{{ stack.rows | length }} {{ t.stack.keys }}</span>
 </div>
 <div class="code-window__scroll">
 <pre><code>
 {%- for row in stack.rows -%}
-<span class="muted">{{ loop.index | padEnd(3) }}</span>{{ row.key | padEnd(stack.keyWidth) }} = [{% for value in row.values %}<span>"{{ value }}"</span>{% if not loop.last %}, {% endif %}{% endfor %}]{% if row.comment %}  <span class="muted"># {{ row.comment }}</span>{% endif %}{% if not loop.last %}
+<span class="muted">{{ loop.index | padEnd(3) }}</span>{{ row.key | padEnd(stack.keyWidth) }} = [{% for value in row.values %}<span>"{{ value }}"</span>{% if not loop.last %}, {% endif %}{% endfor %}]{% if row.comment %}  <span class="muted"># {{ t.stack.comments[row.comment] }}</span>{% endif %}{% if not loop.last %}
 {% endif %}
 {%- endfor -%}
 </code></pre>
@@ -78,36 +84,34 @@ layout: layouts/base.njk
 
 <section id="writing" class="section" aria-labelledby="writing-title">
 <div class="container section__inner">
-<h2 id="writing-title" class="section-label">/writing</h2>
+<h2 id="writing-title" class="section-label">{{ t.writing.label }}</h2>
 <div class="section-body">
-{% for post in collections.posts | newestFirst | take(3) %}
+{% for post in collections["posts_" + lang] | newestFirst | take(3) %}
 <a class="post-row" href="{{ post.url }}">
-<span class="post-row__date">{% if post.data.draft %}draft{% else %}{{ post.date | isoDate }}{% endif %}</span>
+<span class="post-row__date">{% if post.data.draft %}{{ t.writing.draft }}{% else %}{{ post.date | isoDate }}{% endif %}</span>
 <span class="post-row__title">{{ post.data.title }}</span>
 <span class="post-row__arrow" aria-hidden="true">→</span>
 </a>
 {% else %}
-<p class="muted">Nothing published yet.</p>
+<p class="muted">{{ t.writing.empty }}</p>
 {% endfor %}
-<a class="text-link" href="/writing/">All posts</a>
+<a class="text-link" href="{{ t.routes.writing }}">{{ t.writing.allPosts }}</a>
 </div>
 </div>
 </section>
 
 <section id="about" class="section" aria-labelledby="about-title">
 <div class="container section__inner">
-<h2 id="about-title" class="section-label">/about</h2>
+<h2 id="about-title" class="section-label">{{ t.about.label }}</h2>
 <div class="section-body about">
-<p class="about__intro">I'm a frontend developer based in Cuernavaca, Mexico. Since 2015 I've built software for the financial sector, where reliability and security come first. I use AI coding tools every day for planning, building and testing.</p>
+<p class="about__intro">{{ t.about.intro }}</p>
 <dl class="facts">
+{% for fact in t.about.facts %}
 <div>
-<dt>education</dt>
-<dd>B.Eng. in Computer Technologies<br><span class="muted">Tecnológico de Monterrey, Campus Cuernavaca · 2012</span></dd>
+<dt>{{ fact.label }}</dt>
+<dd>{{ fact.value }}<br><span class="muted">{{ fact.detail }}</span></dd>
 </div>
-<div>
-<dt>languages</dt>
-<dd>Spanish, native<br><span class="muted">English, upper-intermediate</span></dd>
-</div>
+{% endfor %}
 </dl>
 </div>
 </div>
@@ -115,12 +119,12 @@ layout: layouts/base.njk
 
 <section id="contact" class="section section--last" aria-labelledby="contact-title">
 <div class="container section__inner">
-<h2 id="contact-title" class="section-label">/contact</h2>
+<h2 id="contact-title" class="section-label">{{ t.contact.label }}</h2>
 <div class="section-body contact">
-<p class="contact__lede">Hiring for a frontend or full-stack role? Write to me.</p>
+<p class="contact__lede">{{ t.contact.lede }}</p>
 <div class="contact__row">
 <p class="contact__email"><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
-<button type="button" class="pill-btn pill-btn--wide js-only" data-copy="{{ site.email }}"><span data-copy-label aria-live="polite">Copy</span></button>
+<button type="button" class="pill-btn pill-btn--wide js-only" data-copy="{{ site.email }}" data-copied-text="{{ t.contact.copied }}" data-failed-text="{{ t.contact.copyFailed }}"><span data-copy-label aria-live="polite">{{ t.contact.copy }}</span></button>
 </div>
 </div>
 </div>

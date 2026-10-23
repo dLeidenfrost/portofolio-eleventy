@@ -1,0 +1,32 @@
+---
+layout: layouts/base.njk
+bodyClass: page-post
+---
+{%- set prevPost = collections.posts | getPreviousCollectionItem(page) -%}
+{%- set nextPost = collections.posts | getNextCollectionItem(page) -%}
+<main class="post-main">
+<article class="post">
+<a class="back-link" href="/writing/">← writing</a>
+
+<header class="post-header">
+<p class="post-meta">
+<span>{% if draft %}draft{% else %}<time datetime="{{ page.date | isoDate }}">{{ page.date | isoDate }}</time>{% endif %}</span>
+<span>{{ content | readingTime }} min read</span>
+{%- for tag in tags %}<span>#{{ tag }}</span>{% endfor %}
+</p>
+<h1>{{ title }}</h1>
+{% if lede or description %}<p class="post-lede">{{ lede or description }}</p>{% endif %}
+</header>
+
+<div class="prose">
+{{ content | safe }}
+</div>
+
+{% if prevPost or nextPost %}
+<nav class="post-nav" aria-label="More posts">
+{% if prevPost %}<a href="{{ prevPost.url }}" rel="prev"><span class="post-nav__dir">← previous</span><span class="post-nav__title">{{ prevPost.data.title }}</span></a>{% endif %}
+{% if nextPost %}<a class="post-nav__next" href="{{ nextPost.url }}" rel="next"><span class="post-nav__dir">next →</span><span class="post-nav__title">{{ nextPost.data.title }}</span></a>{% endif %}
+</nav>
+{% endif %}
+</article>
+</main>

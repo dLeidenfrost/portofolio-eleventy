@@ -3,7 +3,6 @@ title: Reconstruí mi sitio con Eleventy y sin frameworks
 description: Por qué cambié WordPress por HTML estático, TypeScript y CSS puros, y qué resuelve Eleventy por mí.
 lede: Mi antiguo sitio en WordPress era lento y nunca tenía ganas de tocarlo. Lo reemplacé con un sitio estático hecho de HTML, TypeScript y CSS puros, generado con Eleventy.
 date: 2026-10-23
-draft: true
 translationKey: rebuilding-with-eleventy
 tags: [eleventy, rendimiento, ia, ia-escrito]
 ---

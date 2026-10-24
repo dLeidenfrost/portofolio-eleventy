@@ -10,7 +10,7 @@
 <a href="{{ home }}#about">{{ t.nav.about }}</a>
 <a href="{{ home }}#contact">{{ t.nav.contact }}</a>
 {%- for version in translations %}{% if version.lang != lang %}
-<a href="{{ version.url }}" hreflang="{{ version.hreflang }}" lang="{{ version.hreflang }}" aria-label="{{ version.switchTo }}">{{ version.lang }}</a>
+<a href="{{ version.url }}" hreflang="{{ version.hreflang }}" lang="{{ version.hreflang }}">{{ version.lang }}<span class="visually-hidden"> · {{ version.switchTo }}</span></a>
 {%- endif %}{% endfor %}
 <button type="button" class="pill-btn js-only" data-theme-toggle aria-label="{{ t.theme.toggle }}" data-label-to-light="{{ t.theme.toLight }}" data-label-to-dark="{{ t.theme.toDark }}">
 <svg class="when-dark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>

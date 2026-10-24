@@ -44,6 +44,8 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("src/assets/css");
   eleventyConfig.addPassthroughCopy("src/assets/files");
+  eleventyConfig.addPassthroughCopy("src/assets/fonts");
+  eleventyConfig.addPassthroughCopy({ "src/favicon.svg": "favicon.svg" });
 
   // Markdown: fenced code renders as the design's titled code window.
   // ```js eleventy.config.js  → caption "eleventy.config.js" / "js"

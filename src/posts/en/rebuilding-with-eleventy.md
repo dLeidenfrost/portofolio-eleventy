@@ -44,4 +44,19 @@ export default function (eleventyConfig) {
 - One small script, loaded only where a page needs it
 - One stylesheet, with custom properties for the light and dark themes
 
-> [Results: add Lighthouse scores and total page weight once the site is live]
+## Results
+
+I ran Lighthouse 13.5 against the live homepage on October 24, 2026. The scores are performance, accessibility, best practices and SEO:
+
+- **Desktop:** 100 / 100 / 100 / 100. Largest contentful paint at 0.4 s.
+- **Mobile:** 99 / 100 / 100 / 100. Largest contentful paint at 1.7 s on Lighthouse's simulated slow 4G connection.
+- **Both:** 0 ms total blocking time, no layout shift, 6 requests and 61 KiB in total.
+
+The two web fonts make up about 52 KiB of that. The HTML, stylesheet and script together come to under 9 KiB.
+
+The first run scored lower: 88 for performance on mobile, 96 for best practices and 90 for SEO. Four small fixes closed the gap:
+
+- **Self-hosted fonts.** The Google Fonts stylesheet blocked rendering while the browser connected to two more domains. Serving the font files from my own server and preloading them moved mobile contentful paint from 3.1 s to 1.3 s.
+- **A favicon.** Without one, the browser asked for `/favicon.ico`, got a 404 and logged a console error.
+- **Absolute `hreflang` URLs.** The links between the English and Spanish versions used paths like `/es/`, and `hreflang` requires full URLs.
+- **Accessible names that match the visible text.** The language switch showed "es" while screen readers heard "Leer en español", and the theme toggle showed "dark" while they heard "Switch to light mode". Now each label starts with the word on screen.

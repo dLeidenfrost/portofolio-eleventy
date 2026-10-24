@@ -4,7 +4,7 @@ description: Why I replaced WordPress with static HTML, plain TypeScript and CSS
 lede: My old WordPress site was slow and I never wanted to touch it. I replaced it with a static site made of plain HTML, TypeScript and CSS, built with Eleventy.
 date: 2026-10-23
 draft: true
-tags: [eleventy, performance]
+tags: [eleventy, performance, ai, ai-written]
 ---
 
 ## Why not a framework

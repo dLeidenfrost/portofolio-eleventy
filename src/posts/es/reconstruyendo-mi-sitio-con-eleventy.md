@@ -5,7 +5,7 @@ lede: Mi antiguo sitio en WordPress era lento y nunca tenía ganas de tocarlo. L
 date: 2026-10-23
 draft: true
 translationKey: rebuilding-with-eleventy
-tags: [eleventy, rendimiento]
+tags: [eleventy, rendimiento, ia, ia-escrito]
 ---
 
 ## Por qué no un framework

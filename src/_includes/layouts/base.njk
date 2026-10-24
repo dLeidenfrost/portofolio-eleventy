@@ -7,6 +7,9 @@
 <meta name="color-scheme" content="light dark">
 <title>{% if title %}{{ title }} · {{ site.name }}{% else %}{{ site.name }}{% endif %}</title>
 <meta name="description" content="{{ description or t.meta.description }}">
+{%- if noindex %}
+<meta name="robots" content="noindex">
+{%- endif %}
 <script>{% themeInitScript %}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

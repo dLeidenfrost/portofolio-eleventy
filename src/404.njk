@@ -1,0 +1,23 @@
+---
+layout: layouts/base.njk
+noindex: true
+pagination:
+  data: site.languages
+  size: 1
+  alias: lang
+# nginx serves /404.html, and /es/404.html for missing pages under /es/
+permalink: "{{ i18n[lang].routes.home }}404.html"
+eleventyComputed:
+  title: "{{ i18n[lang].notFound.title }}"
+---
+<main>
+<div class="container hero">
+<p class="prompt">{{ t.notFound.prompt }}</p>
+<h1>404</h1>
+<p class="lede">{{ t.notFound.lede }}</p>
+<div class="actions">
+<a class="btn btn--primary" href="{{ t.routes.home }}">{{ t.notFound.home }}</a>
+<a class="btn" href="{{ t.routes.writing }}">{{ t.notFound.writing }}</a>
+</div>
+</div>
+</main>

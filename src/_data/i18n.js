@@ -100,6 +100,13 @@ export default {
       previous: "← previous",
       next: "next →",
     },
+    notFound: {
+      title: "Page not found",
+      prompt: "~ % cat this-page",
+      lede: "cat: this-page: No such file or directory. The page may have moved, or the link may be wrong.",
+      home: "Go to the homepage",
+      writing: "Browse the writing",
+    },
     footer: { builtWith: "Built with Eleventy, TypeScript and plain CSS" },
   },
 
@@ -202,6 +209,13 @@ export default {
       moreNav: "Más publicaciones",
       previous: "← anterior",
       next: "siguiente →",
+    },
+    notFound: {
+      title: "Página no encontrada",
+      prompt: "~ % cat esta-pagina",
+      lede: "cat: esta-pagina: No existe el archivo o el directorio. Puede que la página se haya movido o que el enlace esté mal.",
+      home: "Ir al inicio",
+      writing: "Ver los escritos",
     },
     footer: { builtWith: "Hecho con Eleventy, TypeScript y CSS puro" },
   },

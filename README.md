@@ -89,7 +89,7 @@ tags: [eleventy]
 Content…
 ```
 
-- **Drafts:** a post with `draft: true` is still listed on the site, labeled "draft", but is left out of the RSS feed.
+- **Drafts:** a post with `draft: true` only appears with `npm run dev`, where it is labeled "draft". `npm run build` leaves it out entirely: no page, no listing and no RSS entry. Remove the line to publish the post.
 - **Reading time:** worked out from the word count.
 - **Code blocks:** they render as the titled code window from the design. Put a file name after the language to show it in the header bar:
 

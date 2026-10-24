@@ -68,6 +68,11 @@ export default function (eleventyConfig) {
   };
   eleventyConfig.setLibrary("md", md);
 
+  // Drafts: shown by `npm run dev`, left out of production builds entirely (no page, listing or feed entry)
+  eleventyConfig.addPreprocessor("drafts", "*", (data) => {
+    if (data.draft && process.env.ELEVENTY_RUN_MODE === "build") return false;
+  });
+
   // Collections: posts_<lang> (all, oldest first) and feed_<lang> (published only)
   for (const lang of site.languages) {
     const postsIn = (api) => api.getFilteredByGlob(`src/posts/${lang}/*.md`).sort((a, b) => a.date - b.date);
